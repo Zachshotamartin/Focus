@@ -13,11 +13,9 @@ const Header = () => {
         <h1 className={styles.title}>Focus</h1>
       </div>
       <Logout />
-      <div>
-        <p className={styles.email}>Logged in as:</p>
+      <div className={styles.profileContainer}>
         {userData && userData.email ? (
           <>
-            <p className={styles.email}>Welcome, {userData.email}!</p>
             {userData.picture && (
               <img
                 src={userData.picture}
@@ -25,6 +23,7 @@ const Header = () => {
                 className={styles.profileImage}
               />
             )}
+            <p className={styles.email}>{userData.email}!</p>
           </>
         ) : (
           <p>Loading user information...</p>

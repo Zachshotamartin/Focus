@@ -6,7 +6,7 @@ const store = configureStore({
     events: eventsSlice,
   },
   preloadedState: {
-    events: { events: [] },
+    events: { events: [], selectedEvent: null },
   },
 });
 

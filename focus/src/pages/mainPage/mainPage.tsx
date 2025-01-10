@@ -27,14 +27,15 @@ const MainPage = () => {
 
       if (response.ok) {
         const event = {
+          id: eventDetails.id,
           title: eventDetails.summary,
-          start: new Date(
-            eventDetails.start.dateTime || eventDetails.start.date
-          ), // Handle all day vs timed events
-          end: new Date(eventDetails.end.dateTime || eventDetails.end.date),
-          allDay: !eventDetails.start.dateTime, // All day events don't have a time
+          start: eventDetails.start.dateTime || eventDetails.start.date, // Keep as ISO string
+          end: eventDetails.end.dateTime || eventDetails.end.date, // Keep as ISO string
+          allDay: !eventDetails.start.dateTime, // All-day events don't have time
         };
+
         dispatch(addCalendarEvent(event));
+
         console.log("Event added successfully");
         alert("Event added successfully!");
       } else {

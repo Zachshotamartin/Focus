@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./leftBar.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { removeCalendarEvent } from "../../reducers/eventsSlice";
 
 const LeftBar = ({
   onSubmitEvent,
@@ -14,6 +16,39 @@ const LeftBar = ({
     end: "",
     timeZone: "America/Los_Angeles",
   });
+
+  const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const selectedEvent = useSelector((state: any) => state.events.selectedEvent);
+  const handleDelete = async () => {
+    if (selectedEvent) {
+      const token = localStorage.getItem("user_token");
+      console.log("Token:", token);
+      if (token) {
+        try {
+          const response = await fetch(
+            `http://localhost:8080/calendar/event/${selectedEvent.id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.ok) {
+            console.log("Event deleted successfully");
+            dispatch(removeCalendarEvent(selectedEvent));
+          } else {
+            console.error("Failed to delete event");
+          }
+        } catch (error) {
+          console.error("Error deleting event:", error);
+        }
+      }
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -94,8 +129,13 @@ const LeftBar = ({
             required
           />
         </div>
-        <button type="submit">Add Event</button>
+        <button className={styles.button} type="submit">
+          Add Event
+        </button>
       </form>
+      <button className={styles.button} onClick={handleDelete}>
+        Delete Event
+      </button>
     </div>
   );
 };

@@ -19,7 +19,7 @@ app.use(express.json());
 // CORS Configuration
 const corsOptions = {
   origin: "http://localhost:5173", // Allow requests from your frontend
-  methods: ["GET", "POST", "OPTIONS"], // Allow these HTTP methods
+  methods: ["GET", "POST", "OPTIONS", "DELETE"], // Add DELETE to allowed methods
   credentials: true, // Allow cookies and authorization headers
 };
 
@@ -108,12 +108,47 @@ app.post("/calendar/event", async (req, res) => {
     res.status(200).send({ success: true, event: response.data });
   } catch (error) {
     console.error("Error adding event:", error.response?.data || error.message);
+    res.status(500).send({
+      error: "Failed to add event",
+      details: error.response?.data || error.message,
+    });
+  }
+});
+
+app.delete("/calendar/event/:eventId", async (req, res) => {
+  console.log("hello");
+  const eventId = req.params.eventId;
+
+  console.log("testing", eventId);
+  const token = req.headers.authorization?.split(" ")[1]; // Extract token from Bearer token
+  console.log("token", token);
+  if (!token) {
+    return res.status(401).send("Missing or invalid token");
+  }
+
+  try {
+    // Call the Google Calendar API to delete the event
+    const response = await axios.delete(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     res
-      .status(500)
-      .send({
-        error: "Failed to add event",
-        details: error.response?.data || error.message,
-      });
+      .status(200)
+      .send({ success: true, message: "Event deleted successfully" });
+  } catch (error) {
+    console.error(
+      "Error deleting event:",
+      error.response?.data || error.message
+    );
+    res.status(500).send({
+      error: "Failed to delete event",
+      details: error.response?.data || error.message,
+    });
   }
 });
 

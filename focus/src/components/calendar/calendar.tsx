@@ -4,7 +4,10 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./calendar.module.css";
-import { setCalendarEvents } from "../../reducers/eventsSlice";
+import {
+  setCalendarEvents,
+  setSelectedEvent,
+} from "../../reducers/eventsSlice";
 
 const localizer = momentLocalizer(moment);
 
@@ -17,7 +20,17 @@ function GoogleCalendar() {
   const calendarEvents = useSelector((state: any) => state.events.events);
 
   useEffect(() => {
-    setEvents(calendarEvents);
+    console.log("calendarEvents", calendarEvents);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newEvents = calendarEvents.map((event: any) => ({
+      id: event.id,
+      title: event.title,
+      start: new Date(event.start),
+      end: new Date(event.end),
+      allDay: event.allDay,
+    }));
+    setEvents(newEvents);
   }, [calendarEvents]);
 
   useEffect(() => {
@@ -35,12 +48,12 @@ function GoogleCalendar() {
             // Map the events to the format required by react-big-calendar
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const mappedEvents = data.items.map((event: any) => ({
+              id: event.id,
               title: event.summary,
-              start: new Date(event.start.dateTime || event.start.date), // Handle all day vs timed events
-              end: new Date(event.end.dateTime || event.end.date),
-              allDay: !event.start.dateTime, // All day events don't have a time
+              start: event.start.dateTime || event.start.date, // Keep as a string
+              end: event.end.dateTime || event.end.date,
+              allDay: !event.start.dateTime,
             }));
-
             dispatch(setCalendarEvents(mappedEvents));
           }
         } catch (error) {
@@ -80,7 +93,16 @@ function GoogleCalendar() {
       <Calendar
         localizer={localizer}
         events={events}
-        onSelectEvent={(event) => alert(event.title)}
+        onSelectEvent={(event) => {
+          dispatch(
+            setSelectedEvent({
+              ...event,
+              start: event.start.toISOString(),
+              end: event.end.toISOString(),
+            })
+          );
+          console.log(event);
+        }}
         onSelectSlot={handleSelect}
         defaultView="month"
         selectable={true}
