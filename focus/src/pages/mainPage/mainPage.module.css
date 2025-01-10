@@ -1,11 +1,12 @@
 .mainPage {
   height: 100vh;
   width: 100%;
-  background-color: pink;
+  background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
 }
 
 .topContainer {
@@ -13,7 +14,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  background-color: #4285f4;
   flex: 1;
 }
 
@@ -23,6 +23,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  background-color: white;
+  background-color: #1a1a1a;
   flex: 6;
 }

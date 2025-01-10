@@ -85,7 +85,7 @@ const LeftBar = ({
 
   return (
     <div className={styles.leftBar}>
-      <h2>Create Event</h2>
+      <h2 >Create Event</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label htmlFor="summary">Event Title:</label>

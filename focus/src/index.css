@@ -54,6 +54,235 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* calendar */
+
+.rbc-toolbar {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  border-radius: 5px;
+  margin-bottom: 0px !important;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.rbc-btn-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rbc-btn-group button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  background-color: #1a1a1a !important; /* Blue background */
+  color: white !important;
+  cursor: pointer;
+}
+
+.rbc-btn-group button:hover {
+  background-color: white !important; /* Darker blue on hover */
+  color: #1a1a1a !important;
+}
+
+.rbc-btn-group button.rbc-active {
+  background-color: #646cff !important; /* Even darker blue on active */
+  color: white !important;
+}
+
+.rbc-toolbar-label {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Month view grid styling */
+.rbc-month-view {
+  font-family: "Roboto", sans-serif;
+}
+
+.rbc-row {
+}
+
+.rbc-month-header {
+}
+
+.rbc-header {
+  background-color: #1a1a1a;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  color: white;
+}
+
+.rbc-month-row {
+}
+
+.rbc-row-bg {
+}
+.rbc-day-bg {
+  background-color: #1a1a1a !important;
+  color: white !important;
+}
+.rbc-off-range-bg {
+  background-color: #646cff !important;
+}
+.rbc-row-content {
+}
+
+.rbc-date-cell {
+  color: white !important;
+}
+/* Time grid (week/day view) */
+.rbc-time-view {
+  background-color: #1a1a1a;
+}
+.rbc-time-header {
+}
+.rbc-label {
+}
+.rbc-time-header-gutter {
+}
+.rbc-time-header-content {
+}
+.rbc-time-header-cell {
+  color: white !important;
+  background-color: #1a1a1a !important;
+}
+.rbc-all-day-cell {
+}
+
+.rbc-time-content {
+  background-color: #1a1a1a;
+  border-top: 0px solid white !important;
+}
+.rbc-time-gutter {
+  background-color: #1a1a1a !important;
+  color: white !important;
+}
+.rbc-time-column {
+  background-color: #1a1a1a !important;
+}
+.rbc-time-slot {
+  background-color: #1a1a1a !important;
+  color: white !important;
+  border: 0px solid #1a1a1a !important;
+  border-top: 1px solid #1a1a1a !important;
+  border-bottom: 1px solid #1a1a1a !important;
+  border-right: 1px solid #1a1a1a !important;
+  border-left: 1px solid #1a1a1a !important;
+}
+.rbc-timeslot-group {
+  background-color: #1a1a1a;
+
+  border-top: 1px solid white !important;
+}
+.rbc-day-slot {
+}
+.rbc-events-container {
+}
+.rbc-selected {
+}
+.rbc-now {
+}
+.rbc-today {
+}
+
+.rbc-current-time-indicator {
+}
+.rbc-agenda-empty {
+  background-color: #1a1a1a !important;
+  color: white !important;
+}
+.rbc-agenda-view {
+}
+.rbc-agenda-table {
+}
+.rbc-agenda-content {
+}
+.rbc-agenda-date-cell {
+}
+.rbc-agenda-time-cell {
+}
+.rbc-agenda-event-cell {
+}
+
+/* Today's date styling */
+.rbc-today {
+  background-color: #1a1a1a !important; /* Light blue */
+  color: white !important;
+  border: 1px solid #007bff;
+}
+
+/* Weekend day styling */
+.rbc-day-bg:nth-child(7n + 6),
+.rbc-day-bg:nth-child(7n + 7) {
+  background-color: #f8f9fa; /* Light gray for weekends */
+}
+
+/* Events styling */
+.rbc-event {
+  background-color: transparent; /* Blue */
+  color: white;
+  border-radius: 4px;
+  padding: 2px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.rbc-event:hover {
+  background-color: #0056b3;
+  cursor: pointer;
+}
+.rbc-event:focus {
+  outline: none;
+}
+
+/* Popup event list styling */
+.rbc-overlay {
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Time grid (week/day view) */
+.rbc-time-content {
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+}
+
+.rbc-current-time-indicator {
+  background-color: red !important;
+  height: 2px;
+}
+
+/* Selected cells styling */
+.rbc-selected-cell {
+  background-color: red;
+}
+
+/* Event content styling */
+.rbc-event-content {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Custom day cells (hover effect) */
+.rbc-day-bg:hover {
+  background-color: #e8f4ff;
+  cursor: pointer;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

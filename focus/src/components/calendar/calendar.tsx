@@ -4,6 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./calendar.module.css";
+
 import {
   setCalendarEvents,
   setSelectedEvent,
@@ -91,6 +92,7 @@ function GoogleCalendar() {
   return (
     <div className={styles.calendar}>
       <Calendar
+        className={styles["react-big-calendar"]}
         localizer={localizer}
         events={events}
         onSelectEvent={(event) => {
@@ -107,6 +109,9 @@ function GoogleCalendar() {
         defaultView="month"
         selectable={true}
         style={{ height: "100%", width: "100%", color: "black" }}
+        components={{
+          event: ({ event }) => <div>{event.title}</div>,
+        }}
       />
     </div>
   );
