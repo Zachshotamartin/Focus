@@ -1,0 +1,12 @@
+.calendar {
+  flex: 6;
+  height: 100%;
+  width: 100%; /* Full width of parent container */
+  display: flex;
+  justify-content: center; /* Optional: Center the calendar */
+  align-items: center; /* Optional: Center the calendar */
+  background-color: #f8f9fa; /* Light gray background like Google Calendar */
+  border: 1px solid black;
+}
+
+

@@ -1,17 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authSlice from "./reducers/authSlice";
+import eventsSlice from "./reducers/eventsSlice";
 
 const store = configureStore({
   reducer: {
-    auth: authSlice,
+    events: eventsSlice,
   },
   preloadedState: {
-    auth: {
-      email: null,
-      name: null,
-      picture: null,
-      isAuthenticated: false,
-    },
+    events: { events: [] },
   },
 });
 

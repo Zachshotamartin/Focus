@@ -1,21 +1,24 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./components/login/login";
+import MainPage from "./pages/mainPage/mainPage";
+import AuthCallback from "./authCallback"; // New component
 import "./App.css";
 
-import { useSelector } from "react-redux";
-
-import LandingPage from "./pages/landingPage/landingPage";
-import MainPage from "./pages/mainPage/mainPage";
-function App() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const auth = useSelector((state: any) => state.auth);
-
+const App = () => {
   return (
-    <div className="App">
-      <main>
-        {!auth.isAuthenticated && <LandingPage />}
-        {auth.isAuthenticated && <MainPage />}
-      </main>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Login page */}
+        <Route path="/" element={<Login />} />
+
+        {/* Main page after successful login */}
+        <Route path="/main" element={<MainPage />} />
+
+        {/* OAuth callback route for handling the token */}
+        <Route path="/auth" element={<AuthCallback />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,28 @@
+.mainPage {
+  height: 100vh;
+  width: 100%;
+  background-color: pink;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.topContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  background-color: #4285f4;
+  flex: 1;
+}
+
+.bottomContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  background-color: white;
+  flex: 6;
+}
