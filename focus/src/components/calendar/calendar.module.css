@@ -3,10 +3,63 @@
   height: 100%;
   width: 100%; /* Full width of parent container */
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Optional: Center the calendar */
+  align-items: flex-start; /* Optional: Center the calendar */
+  background-color: #1a1a1a; /* Light gray background like Google Calendar */
+}
+
+.pageStateButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.pageStateButtonContainer button {
+  margin-right: 1rem;
+}
+.tasks {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-self: flex-start;
+  overflow-y: scroll;
+}
+.quickAdd {
+  flex: 1;
+  height: 100%;
+  width: 100%; /* Full width of parent container */
+  display: flex;
+  flex-direction: row;
   justify-content: center; /* Optional: Center the calendar */
   align-items: center; /* Optional: Center the calendar */
   background-color: #1a1a1a; /* Light gray background like Google Calendar */
-  
+  margin-bottom: 1rem;
+}
+.naturalLanguageInput {
+  flex: 1;
+  height: 100%;
+  width: 100%; /* Full width of parent container */
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* Optional: Center the calendar */
+  align-items: center; /* Optional: Center the calendar */
+  background-color: #1a1a1a; /* Light gray background like Google Calendar */
+  border: 1px solid white;
+  resize: none;
 }
 
+.tasksContainer {
+  flex: 1;
+  height: 100%;
+  width: 100%; /* Full width of parent container */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Optional: Center the calendar */
+  align-items: flex-start; /* Optional: Center the calendar */
+  background-color: #1a1a1a; /* Light gray background like Google Calendar */
+}
 /* Toolbar (navigation bar) */

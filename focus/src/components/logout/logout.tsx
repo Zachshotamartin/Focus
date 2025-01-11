@@ -12,23 +12,23 @@ const Logout: React.FC = () => {
   };
 
   return (
-    <button onClick={handleLogout} style={styles.button}>
+    <button onClick={handleLogout}>
       Logout
     </button>
   );
 };
 
 // Add some basic styling for the button
-const styles = {
-  button: {
-    padding: "10px 20px",
-    backgroundColor: "#d9534f",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontSize: "16px",
-  },
-};
+// const styles = {
+//   button: {
+//     padding: "10px 20px",
+//     backgroundColor: "#d9534f",
+//     color: "white",
+//     border: "none",
+//     borderRadius: "5px",
+//     cursor: "pointer",
+//     fontSize: "16px",
+//   },
+// };
 
 export default Logout;

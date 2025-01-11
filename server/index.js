@@ -104,12 +104,42 @@ app.post("/calendar/event", async (req, res) => {
         },
       }
     );
-
+    console.log("response", response.data);
     res.status(200).send({ success: true, event: response.data });
   } catch (error) {
     console.error("Error adding event:", error.response?.data || error.message);
     res.status(500).send({
       error: "Failed to add event",
+      details: error.response?.data || error.message,
+    });
+  }
+});
+
+app.post("/calendar/quickadd", async (req, res) => {
+  const { text } = req.body;
+  const token = req.headers.authorization?.split(" ")[1]; // Extract Bearer token
+
+  if (!text || !token) {
+    return res.status(400).send("Missing event text or token");
+  }
+
+  try {
+    const response = await axios.post(
+      "https://www.googleapis.com/calendar/v3/calendars/primary/events/quickAdd",
+      { text },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.status(200).send({ success: true, event: response.data });
+  } catch (error) {
+    console.error("Error in Quick Add:", error.response?.data || error.message);
+    res.status(500).send({
+      error: "Failed to add event via Quick Add",
       details: error.response?.data || error.message,
     });
   }

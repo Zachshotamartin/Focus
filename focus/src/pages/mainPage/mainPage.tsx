@@ -3,7 +3,7 @@ import Header from "../../components/header/header";
 import LeftBar from "../../components/leftBar/leftBar";
 import styles from "./mainPage.module.css";
 import { useDispatch } from "react-redux";
-import { addCalendarEvent } from "../../reducers/eventsSlice";
+import { addCalendarEvent, addTask } from "../../reducers/eventsSlice";
 const MainPage = () => {
   const dispatch = useDispatch();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,15 +26,23 @@ const MainPage = () => {
       });
 
       if (response.ok) {
+        const responseData = await response.json();
+        console.log("Response Data:", responseData);
+
         const event = {
-          id: eventDetails.id,
-          title: eventDetails.summary,
-          start: eventDetails.start.dateTime || eventDetails.start.date, // Keep as ISO string
-          end: eventDetails.end.dateTime || eventDetails.end.date, // Keep as ISO string
-          allDay: !eventDetails.start.dateTime, // All-day events don't have time
+          id: responseData.event.id, // Use the id from the backend response
+          title: responseData.event.summary,
+          start:
+            responseData.event.start.dateTime || responseData.event.start.date,
+          end: responseData.event.end.dateTime || responseData.event.end.date,
+          allDay: !responseData.event.start.dateTime,
+          description: responseData.event.description,
+          extendedProperties: responseData.event.extendedProperties,
         };
 
         dispatch(addCalendarEvent(event));
+        console.log("Event", event);
+        dispatch(addTask(event));
 
         console.log("Event added successfully");
         alert("Event added successfully!");

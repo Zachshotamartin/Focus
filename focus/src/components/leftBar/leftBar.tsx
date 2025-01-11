@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./leftBar.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { removeCalendarEvent } from "../../reducers/eventsSlice";
+import { removeCalendarEvent, removeTask } from "../../reducers/eventsSlice";
 
 const LeftBar = ({
   onSubmitEvent,
@@ -15,11 +15,14 @@ const LeftBar = ({
     start: "",
     end: "",
     timeZone: "America/Los_Angeles",
+    estimatedDuration: 0, // Added estimatedDuration field
+    deadline: "", // Added deadline field
   });
 
   const dispatch = useDispatch();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const selectedEvent = useSelector((state: any) => state.events.selectedEvent);
+
   const handleDelete = async () => {
     if (selectedEvent) {
       const token = localStorage.getItem("user_token");
@@ -39,7 +42,8 @@ const LeftBar = ({
 
           if (response.ok) {
             console.log("Event deleted successfully");
-            dispatch(removeCalendarEvent(selectedEvent));
+            dispatch(removeTask(selectedEvent));
+            dispatch(removeCalendarEvent());
           } else {
             console.error("Failed to delete event");
           }
@@ -54,7 +58,10 @@ const LeftBar = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setEventDetails((prev) => ({ ...prev, [name]: value }));
+    setEventDetails((prev) => ({
+      ...prev,
+      [name]: name === "estimatedDuration" ? parseFloat(value) : value, // Parse duration as float
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -71,6 +78,12 @@ const LeftBar = ({
         dateTime: new Date(eventDetails.end).toISOString(),
         timeZone: eventDetails.timeZone,
       },
+      extendedProperties: {
+        private: {
+          estimatedDuration: eventDetails.estimatedDuration, // Include estimated duration
+          deadline: eventDetails.deadline || null, // Include deadline if provided
+        },
+      },
     };
 
     onSubmitEvent(formattedEvent); // Call the provided function
@@ -80,12 +93,14 @@ const LeftBar = ({
       start: "",
       end: "",
       timeZone: "America/Los_Angeles",
+      estimatedDuration: 0,
+      deadline: "",
     });
   };
 
   return (
     <div className={styles.leftBar}>
-      <h2 >Create Event</h2>
+      <h2>Create Event</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label htmlFor="summary">Event Title:</label>
@@ -127,6 +142,28 @@ const LeftBar = ({
             value={eventDetails.end}
             onChange={handleChange}
             required
+          />
+        </div>
+        <div>
+          <label htmlFor="estimatedDuration">Estimated Duration (hours):</label>
+          <input
+            type="number"
+            id="estimatedDuration"
+            name="estimatedDuration"
+            value={eventDetails.estimatedDuration}
+            onChange={handleChange}
+            step="0.1"
+            min="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="deadline">Deadline:</label>
+          <input
+            type="datetime-local"
+            id="deadline"
+            name="deadline"
+            value={eventDetails.deadline}
+            onChange={handleChange}
           />
         </div>
         <button className={styles.button} type="submit">
