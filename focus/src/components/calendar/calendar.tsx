@@ -19,7 +19,6 @@ function GoogleCalendar() {
   const dispatch = useDispatch();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [events, setEvents] = useState<any[]>([]); // Use proper typing here for events
-  const [loading, setLoading] = useState(true);
   const [naturalLanguageInput, setNaturalLanguageInput] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const calendarEvents = useSelector((state: any) => state.events.events);
@@ -91,8 +90,6 @@ function GoogleCalendar() {
           }
         } catch (error) {
           console.error("Error fetching calendar events:", error);
-        } finally {
-          setLoading(false);
         }
       }
     };
@@ -172,17 +169,13 @@ function GoogleCalendar() {
     }
   };
 
-  if (loading) {
-    return <div>Loading events...</div>;
-  }
-
   return (
     <div className={styles.calendar}>
       <div className={styles.pageStateButtonContainer}>
         <button onClick={() => setPageState("calendar")}>Calendar</button>
         <button onClick={() => setPageState("tasks")}>Tasks</button>
       </div>
-      {pageState === "calendar" && (
+      {(pageState === "calendar" || !pageState) && (
         <>
           <div className={styles.quickAdd}>
             <textarea
@@ -232,7 +225,7 @@ function GoogleCalendar() {
                 <button onClick={() => setAllTasks(false)}> Swipe </button>
               </div>
               {allTasks && (
-                <ul>
+                <ul className={styles.taskList}>
                   {viewTasks.map((task: any) => (
                     <Task key={task.id} task={task} />
                   ))}

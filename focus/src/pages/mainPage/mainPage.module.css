@@ -6,7 +6,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-
 }
 
 .topContainer {
@@ -15,6 +14,7 @@
   align-items: flex-start;
   width: 100%;
   flex: 1;
+  margin-bottom: 1rem;
 }
 
 .bottomContainer {
@@ -25,4 +25,18 @@
   width: 100%;
   background-color: #1a1a1a;
   flex: 6;
+}
+
+.loadingPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #1a1a1a;
+}
+
+.loadingPage h1 {
+  color: black;
+  vertical-align: middle;
 }

@@ -1,3 +1,5 @@
+const { OpenAI } = require("openai");
+
 const express = require("express");
 const { OAuth2Client } = require("google-auth-library");
 const cors = require("cors");
@@ -5,6 +7,11 @@ const dotenv = require("dotenv");
 const axios = require("axios");
 
 dotenv.config();
+
+// Initialize OpenAI API
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // Add your personal OpenAI API key to the .env file
+});
 
 const app = express();
 const oauth2Client = new OAuth2Client(
@@ -115,6 +122,44 @@ app.post("/calendar/event", async (req, res) => {
   }
 });
 
+app.post("/calendar/freebusy", async (req, res) => {
+  const { timeMin, timeMax, timeZone } = req.body;
+  const token = req.headers.authorization?.split(" ")[1]; // Extract Bearer token
+  console.log("token", token);
+  if (!timeMin || !timeMax || !token) {
+    return res.status(400).send("Missing required parameters or token");
+  }
+
+  try {
+    const freeBusyResponse = await axios.post(
+      "https://www.googleapis.com/calendar/v3/freeBusy",
+      {
+        timeMin,
+        timeMax,
+        timeZone: timeZone || "UTC", // Default to UTC if no timezone is provided
+        items: [{ id: "primary" }], // Check the primary calendar
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.status(200).send({ success: true, freeBusy: freeBusyResponse.data });
+  } catch (error) {
+    console.error(
+      "Error fetching free/busy information:",
+      error.response?.data || error.message
+    );
+    res.status(500).send({
+      error: "Failed to fetch free/busy information",
+      details: error.response?.data || error.message,
+    });
+  }
+});
+
 app.post("/calendar/quickadd", async (req, res) => {
   const { text } = req.body;
   const token = req.headers.authorization?.split(" ")[1]; // Extract Bearer token
@@ -178,6 +223,51 @@ app.delete("/calendar/event/:eventId", async (req, res) => {
     res.status(500).send({
       error: "Failed to delete event",
       details: error.response?.data || error.message,
+    });
+  }
+});
+
+app.post("/schedule/ai-suggest", async (req, res) => {
+  const { freeSlots, eventDetails } = req.body;
+
+  if (!freeSlots || !eventDetails) {
+    return res.status(400).send("Missing free slots or event details");
+  }
+
+  try {
+    // Create a prompt for the AI
+    const prompt = `
+      You are a scheduling assistant. Based on the following available time slots and event details, suggest the most optimal time to schedule the event:
+      
+      Available free slots: ${JSON.stringify(freeSlots)}
+      Event details: Event name is ${
+        eventDetails.summary
+      }, Estimated duration is ${
+      eventDetails.estimatedDuration
+    } hour, and the deadline is ${eventDetails.deadline}.
+      
+      Ensure the suggested time fits within the free slots, accommodates the estimated duration, and is scheduled as early as possible before the deadline. Respond only with the suggested time, in the format "YYYY-MM-DDTHH:mm:ssZ" and only suggest a time that is divisible by 15 minutes (like 2023-08-01T09:00:00Z or 2023-08-01T09:15:00Z or 2023-08-01T09:30:00Z or 2023-08-01T09:45:00Z). Do not include any explanation or additional text.`;
+    console.log("prompt", prompt);
+    // Call OpenAI API
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful scheduling assistant.",
+        },
+        { role: "user", content: prompt },
+      ],
+    });
+    const suggestion = response.choices[0].message.content.trim();
+
+    console.log("AI Scheduling Suggestion:", suggestion);
+    res.status(200).send({ success: true, suggestion });
+  } catch (error) {
+    console.error("Error with AI scheduling suggestion:", error.message);
+    res.status(500).send({
+      error: "Failed to generate AI scheduling suggestion",
+      details: error.message,
     });
   }
 });

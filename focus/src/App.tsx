@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./components/login/login";
+import LoginPage from "./pages/loginPage/loginPage";
 import MainPage from "./pages/mainPage/mainPage";
 import AuthCallback from "./authCallback"; // New component
 import "./App.css";
@@ -9,7 +9,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         {/* Login page */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LoginPage />} />
 
         {/* Main page after successful login */}
         <Route path="/main" element={<MainPage />} />

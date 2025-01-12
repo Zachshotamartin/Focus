@@ -1,30 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface EventState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   events: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   selectedEvent: any | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   tasks: any[];
+  freebusy: any[];
+  loading: boolean;
 }
 
 const initialState: EventState = {
   events: [],
   selectedEvent: null,
   tasks: [],
+  freebusy: [],
+  loading: true,
 };
 
 const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setCalendarEvents: (state, action: PayloadAction<any[]>) => {
       state.events = action.payload;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     addCalendarEvent: (state, action: PayloadAction<any>) => {
       state.events.push(action.payload);
     },
@@ -36,7 +39,7 @@ const eventsSlice = createSlice({
       }
       state.selectedEvent = null;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     setSelectedEvent: (state, action: PayloadAction<any>) => {
       const event = action.payload;
       state.selectedEvent = {
@@ -46,17 +49,19 @@ const eventsSlice = createSlice({
         end: event.end instanceof Date ? event.end.toISOString() : event.end,
       };
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setTasks: (state, action: PayloadAction<any[]>) => {
       state.tasks = action.payload;
+      state.loading = false;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     addTask: (state, action: PayloadAction<any>) => {
       state.tasks.push(action.payload);
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     removeTask: (state, action: PayloadAction<any>) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload.id);
+    },
+    setFreeBusy: (state, action: PayloadAction<any[]>) => {
+      state.freebusy = action.payload;
     },
   },
 });
@@ -69,6 +74,7 @@ export const {
   setTasks,
   addTask,
   removeTask,
+  setFreeBusy,
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

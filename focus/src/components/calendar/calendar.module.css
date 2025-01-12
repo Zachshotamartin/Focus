@@ -7,6 +7,7 @@
   justify-content: flex-start; /* Optional: Center the calendar */
   align-items: flex-start; /* Optional: Center the calendar */
   background-color: #1a1a1a; /* Light gray background like Google Calendar */
+  overflow-y: auto;
 }
 
 .pageStateButtonContainer {
@@ -27,6 +28,9 @@
   align-items: flex-start;
   align-self: flex-start;
   overflow-y: scroll;
+
+  height: 100%;
+  width: 100%;
 }
 .quickAdd {
   flex: 1;
@@ -63,3 +67,9 @@
   background-color: #1a1a1a; /* Light gray background like Google Calendar */
 }
 /* Toolbar (navigation bar) */
+
+.taskList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

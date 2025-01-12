@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Task from "../task/task";
+import SwipeableTaskItem from "../task/SwipeableTaskItem";
 import {
   removeCalendarEvent,
   removeTask,
   setSelectedEvent,
 } from "../../reducers/eventsSlice";
+import styles from "./swipeableList.module.css";
 
 const SwipeableList = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,21 +59,23 @@ const SwipeableList = () => {
     }
   };
 
+  const handleRandomNextTask = () => {
+    let randomIndex = Math.floor(Math.random() * viewTasks.length);
+    while (randomIndex === shownTaskIndex) {
+      randomIndex = Math.floor(Math.random() * viewTasks.length);
+    }
+    setShownTaskIndex(randomIndex);
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
       {viewTasks.length > 0 ? (
         <>
-          <Task task={tasks[shownTaskIndex]} />
-          <button
-            onClick={() =>
-              setShownTaskIndex((prev) =>
-                prev + 1 > viewTasks.length - 1 ? 0 : prev + 1
-              )
-            }
-          >
-            Next Task
-          </button>
-          <button onClick={handleDelete}>Completed Task</button>
+          <SwipeableTaskItem task={tasks[shownTaskIndex]} />
+          <div className={styles.buttonContainer}>
+            <button onClick={handleRandomNextTask}>Next Task</button>
+            <button onClick={handleDelete}>Completed Task</button>
+          </div>
         </>
       ) : (
         <p>No tasks available</p>
