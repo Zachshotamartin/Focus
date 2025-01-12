@@ -66,7 +66,7 @@ button:focus-visible {
 }
 
 .rbc-toolbar button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #475569; /* Darker blue on hover */
 }
 
 .rbc-btn-group {
@@ -91,7 +91,7 @@ button:focus-visible {
 }
 
 .rbc-btn-group button.rbc-active {
-  background-color: #646cff !important; /* Even darker blue on active */
+  background-color: #475569 !important; /* Even darker blue on active */
   color: white !important;
 }
 
@@ -133,7 +133,7 @@ button:focus-visible {
   color: white !important;
 }
 .rbc-off-range-bg {
-  background-color: #646cff !important;
+  background-color: #475569 !important;
 }
 .rbc-row-content {
 }
@@ -219,7 +219,7 @@ button:focus-visible {
 .rbc-today {
   background-color: #1a1a1a !important; /* Light blue */
   color: white !important;
-  border: 1px solid #007bff;
+  border: 1px solid #475569;
 }
 
 /* Weekend day styling */
