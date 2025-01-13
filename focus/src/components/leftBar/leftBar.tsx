@@ -7,7 +7,8 @@ import {
   removeTask,
   setFreeBusy,
 } from "../../reducers/eventsSlice";
-
+import { setIsCalendarView } from "../../reducers/pageStateSlice";
+import logo from "../../assets/logo.png";
 const LeftBar = ({
   onSubmitEvent,
 }: {
@@ -22,6 +23,7 @@ const LeftBar = ({
     estimatedDuration: 0, // Added estimatedDuration field
     deadline: "", // Added deadline field
   });
+
 
   const dispatch = useDispatch();
 
@@ -178,20 +180,12 @@ const LeftBar = ({
     });
   };
 
-  const handleTestAdd = () => {
+  const handleTestAdd = async () => {
     const startIdx = tasks.length;
     for (let i = startIdx; i < startIdx + 5; i++) {
       const formattedEvent = {
         summary: `Task ${i}`,
         description: "Description",
-        start: {
-          dateTime: new Date().toISOString(),
-          timeZone: "America/Los_Angeles",
-        },
-        end: {
-          dateTime: new Date().toISOString(),
-          timeZone: eventDetails.timeZone,
-        },
         extendedProperties: {
           private: {
             estimatedDuration: 1, // Include estimated duration
@@ -199,13 +193,25 @@ const LeftBar = ({
           },
         },
       };
-
-      onSubmitEvent(formattedEvent); // Call the provided function
+      const freeBusy = await handleFetchFreeBusy();
+      onSubmitEvent({ formattedEvent: formattedEvent, freeBusy: freeBusy }); // Call the provided function
     }
   };
 
   return (
     <div className={styles.leftBar}>
+      <div className={styles.titleContainer}>
+        <img src={logo} alt="Logo" className={styles.logo} />
+        <h1 className={styles.title}>Focus</h1>
+      </div>
+      <div className={styles.pageStateButtonContainer}>
+        <button onClick={() => dispatch(setIsCalendarView(true))}>
+          Calendar
+        </button>
+        <button onClick={() => dispatch(setIsCalendarView(false))}>
+          Tasks
+        </button>
+      </div>
       <div className={styles.buttonContainer}>
         <button onClick={() => setAutoSchedule(true)}>Auto</button>
         <button onClick={() => setAutoSchedule(false)}>Manual</button>
@@ -312,10 +318,10 @@ const LeftBar = ({
           </button>
         </form>
       )}
-      <button className={styles.button} onClick={handleDelete}>
+      <button className={styles.buttonBottom} onClick={handleDelete}>
         Delete Event
       </button>
-      <button className={styles.button} onClick={handleTestAdd}>
+      <button className={styles.buttonBottom} onClick={handleTestAdd}>
         Test Add
       </button>
     </div>

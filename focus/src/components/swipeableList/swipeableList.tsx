@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import SwipeableTaskItem from "../task/SwipeableTaskItem";
+import SwipeableTaskItem from "../task/swipeableTaskItem";
 import {
   removeCalendarEvent,
   removeTask,
@@ -9,21 +10,20 @@ import {
 import styles from "./swipeableList.module.css";
 
 const SwipeableList = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tasks = useSelector((state: any) => state.events.tasks);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
+  const selectedEvent = useSelector((state: any) => state.events.selectedEvent);
+  console.log("selectedEvent", selectedEvent);
   const dispatch = useDispatch();
+
   const [shownTaskIndex, setShownTaskIndex] = useState(0);
   const [viewTasks, setViewTasks] = useState(tasks);
 
   useEffect(() => {
+    console.log("selectedEvent", selectedEvent);
+  }, [selectedEvent]);
+  useEffect(() => {
     setViewTasks(tasks);
   }, [tasks]);
-
-  useEffect(() => {
-    dispatch(setSelectedEvent(viewTasks[shownTaskIndex]));
-  }, [dispatch, shownTaskIndex, viewTasks]);
 
   const handleDelete = async () => {
     if (viewTasks[shownTaskIndex]) {
@@ -65,18 +65,17 @@ const SwipeableList = () => {
       randomIndex = Math.floor(Math.random() * viewTasks.length);
     }
     setShownTaskIndex(randomIndex);
+    dispatch(setSelectedEvent(viewTasks[randomIndex]));
   };
 
   return (
     <div className={styles.container}>
       {viewTasks.length > 0 ? (
-        <>
-          <SwipeableTaskItem task={tasks[shownTaskIndex]} />
-          <div className={styles.buttonContainer}>
-            <button onClick={handleRandomNextTask}>Next Task</button>
-            <button onClick={handleDelete}>Completed Task</button>
-          </div>
-        </>
+        <SwipeableTaskItem
+          task={selectedEvent}
+          handleNext={handleRandomNextTask}
+          handleDelete={handleDelete}
+        />
       ) : (
         <p>No tasks available</p>
       )}

@@ -7,23 +7,32 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "./calendar.module.css";
 import Task from "../task/task";
 import SwipeableList from "../swipeableList/swipeableList";
+import Logout from "../logout/logout";
+
 import {
   setCalendarEvents,
   setSelectedEvent,
   setTasks,
 } from "../../reducers/eventsSlice";
 
+import { setAllTasks } from "../../reducers/pageStateSlice";
+
 const localizer = momentLocalizer(moment);
 
 function GoogleCalendar() {
   const dispatch = useDispatch();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userData = JSON.parse(localStorage.getItem("user_info") || "{}");
+
   const [events, setEvents] = useState<any[]>([]); // Use proper typing here for events
   const [naturalLanguageInput, setNaturalLanguageInput] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const calendarEvents = useSelector((state: any) => state.events.events);
-  const [pageState, setPageState] = useState("calendar");
-  const [allTasks, setAllTasks] = useState(true);
+  const isCalendarView = useSelector(
+    (state: any) => state.pageState.isCalendarView
+  );
+
+  const allTasks = useSelector((state: any) => state.pageState.allTasks);
+  const [showAllTasks, setShowAllTasks] = useState(allTasks);
   const tasks = useSelector((state: any) => state.events.tasks);
   const [viewTasks, setViewTasks] = useState<any[]>(tasks);
 
@@ -47,6 +56,10 @@ function GoogleCalendar() {
   }, [tasks]);
 
   useEffect(() => {
+    setShowAllTasks(allTasks);
+  }, [allTasks]);
+
+  useEffect(() => {
     const fetchCalendarEvents = async () => {
       const token = localStorage.getItem("user_token");
 
@@ -59,7 +72,6 @@ function GoogleCalendar() {
           console.log("data", data.items);
           if (data.items) {
             // Map the events to the format required by react-big-calendar
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const mappedEvents = data.items.map((event: any) => ({
               id: event.id,
               title: event.summary,
@@ -171,22 +183,37 @@ function GoogleCalendar() {
 
   return (
     <div className={styles.calendar}>
-      <div className={styles.pageStateButtonContainer}>
-        <button onClick={() => setPageState("calendar")}>Calendar</button>
-        <button onClick={() => setPageState("tasks")}>Tasks</button>
-      </div>
-      {(pageState === "calendar" || !pageState) && (
+      {isCalendarView && (
         <>
-          <div className={styles.quickAdd}>
-            <textarea
-              className={styles.naturalLanguageInput}
-              placeholder="Add event with natural language"
-              value={naturalLanguageInput}
-              onChange={(e) => setNaturalLanguageInput(e.target.value)}
-            />
-            <button className={styles.button} onClick={handleQuickAdd}>
-              Submit
-            </button>
+          <div className={styles.topRow}>
+            <div className={styles.quickAdd}>
+              <input
+                className={styles.naturalLanguageInput}
+                placeholder="Add event with natural language"
+                value={naturalLanguageInput}
+                onChange={(e) => setNaturalLanguageInput(e.target.value)}
+              />
+              <button className={styles.button} onClick={handleQuickAdd}>
+                Submit
+              </button>
+            </div>
+            <div className={styles.profileContainer}>
+              {userData && userData.email ? (
+                <>
+                  {userData.picture && (
+                    <img
+                      src={userData.picture}
+                      alt="User Profile"
+                      className={styles.profileImage}
+                    />
+                  )}
+                  <p className={styles.email}>{userData.email}</p>
+                  <Logout />
+                </>
+              ) : (
+                <p>Loading user information...</p>
+              )}
+            </div>
           </div>
 
           <Calendar
@@ -206,32 +233,63 @@ function GoogleCalendar() {
             onSelectSlot={handleSelect}
             defaultView="month"
             selectable={true}
-            style={{ height: "100%", width: "100%", color: "black" }}
+            style={{
+              height: "100%",
+              width: "100%",
+              position: "relative",
+              zIndex: 20,
+            }}
             components={{
               event: ({ event }) => <div>{event.title}</div>,
             }}
           />
         </>
       )}
-      {pageState === "tasks" && (
+      {!isCalendarView && (
         <div className={styles.tasks}>
           {tasks.length > 0 && (
             <div className={styles.tasksContainer}>
-              <div className={styles.pageStateButtonContainer}>
-                <button onClick={() => setAllTasks(true)}>
-                  {" "}
-                  View all tasks
-                </button>
-                <button onClick={() => setAllTasks(false)}> Swipe </button>
+              <div className={styles.topRow}>
+                <div className={styles.IsCalendarViewButtonContainer}>
+                  <button onClick={() => dispatch(setAllTasks(true))}>
+                    {" "}
+                    View all tasks
+                  </button>
+                  <button onClick={() => dispatch(setAllTasks(false))}>
+                    {" "}
+                    Swipe{" "}
+                  </button>
+                </div>
+                <div className={styles.profileContainer}>
+                  {userData && userData.email ? (
+                    <>
+                      {userData.picture && (
+                        <img
+                          src={userData.picture}
+                          alt="User Profile"
+                          className={styles.profileImage}
+                        />
+                      )}
+                      <p className={styles.email}>{userData.email}</p>
+                      <Logout />
+                    </>
+                  ) : (
+                    <p>Loading user information...</p>
+                  )}
+                </div>
               </div>
-              {allTasks && (
+              {showAllTasks && (
                 <ul className={styles.taskList}>
                   {viewTasks.map((task: any) => (
-                    <Task key={task.id} task={task} />
+                    <Task
+                      key={task.id}
+                      task={task}
+                      
+                    />
                   ))}
                 </ul>
               )}
-              {!allTasks && <SwipeableList />}
+              {!showAllTasks && <SwipeableList />}
             </div>
           )}
           {tasks.length === 0 && <p>No tasks found.</p>}

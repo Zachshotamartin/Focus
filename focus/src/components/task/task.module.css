@@ -4,11 +4,13 @@
   border-radius: 10px;
   padding: 1rem;
   margin: 1rem;
-  width: 11rem;
-  height: 11rem;
+  width: 12rem;
+  height: 12rem;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
+

@@ -12,6 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+* {
+  box-sizing: border-box;
+}
 
 a {
   font-weight: 500;
@@ -42,27 +45,30 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #242424;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-right: 1rem;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #475569;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
+input {
+  height: 2rem;
+}
 /* calendar */
 
 .rbc-toolbar {
-  background-color: #1a1a1a;
+  background-color: #2b2b2b;
   color: white;
   padding: 10px;
   font-family: Arial, sans-serif;
   border-radius: 5px;
-  margin-bottom: 0px !important;
+  margin-bottom: 1rem !important;
 }
 
 .rbc-toolbar button:hover {
@@ -80,14 +86,13 @@ button:focus-visible {
   padding: 5px 10px;
   border-radius: 3px;
   border: none;
-  background-color: #1a1a1a !important; /* Blue background */
+  background-color: #242424 !important; /* Blue background */
   color: white !important;
   cursor: pointer;
 }
 
 .rbc-btn-group button:hover {
-  background-color: white !important; /* Darker blue on hover */
-  color: #1a1a1a !important;
+  background-color: #475569 !important; /* Darker blue on hover */
 }
 
 .rbc-btn-group button.rbc-active {
@@ -105,21 +110,47 @@ button:focus-visible {
 /* Month view grid styling */
 .rbc-month-view {
   font-family: "Roboto", sans-serif;
+  border: none !important;
+  height: 100%;
+  background-color: transparent; /* Avoid conflicting with wrapper's background */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-radius: 50px;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+    /* Bottom shadow */ 0 -4px 8px rgba(0, 0, 0, 0.2),
+    /* Top shadow */ 4px 0 8px rgba(0, 0, 0, 0.2),
+    /* Right shadow */ -4px 0 8px rgba(0, 0, 0, 0.2); /* Left shadow */
+}
+
+.rbc-time-view {
+  font-family: "Roboto", sans-serif;
+  border: none !important;
+  height: 100%;
+  background-color: transparent; /* Avoid conflicting with wrapper's background */
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .rbc-row {
 }
 
 .rbc-month-header {
+  border: none;
 }
 
 .rbc-header {
-  background-color: #1a1a1a;
+  background-color: #242424;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
+  border-top: none !important;
   padding: 5px;
-  border-bottom: 1px solid #ddd;
+  border-right: none !important;
+  border-left: none !important;
+
   color: white;
 }
 
@@ -129,7 +160,7 @@ button:focus-visible {
 .rbc-row-bg {
 }
 .rbc-day-bg {
-  background-color: #1a1a1a !important;
+  background-color: #212121 !important;
   color: white !important;
 }
 .rbc-off-range-bg {
@@ -140,10 +171,12 @@ button:focus-visible {
 
 .rbc-date-cell {
   color: white !important;
+  padding-right: 0.5rem !important;
+  padding-top: 0.5rem !important;
 }
 /* Time grid (week/day view) */
 .rbc-time-view {
-  background-color: #1a1a1a;
+  background-color: #242424;
 }
 .rbc-time-header {
 }
@@ -155,35 +188,31 @@ button:focus-visible {
 }
 .rbc-time-header-cell {
   color: white !important;
-  background-color: #1a1a1a !important;
+  background-color: #242424 !important;
 }
 .rbc-all-day-cell {
 }
 
 .rbc-time-content {
-  background-color: #1a1a1a;
-  border-top: 0px solid white !important;
+  background-color: #242424;
+  /* border: 1px solid rgba(255, 255, 255, 0.422) !important; */
 }
 .rbc-time-gutter {
-  background-color: #1a1a1a !important;
+  background-color: #242424 !important;
   color: white !important;
 }
 .rbc-time-column {
-  background-color: #1a1a1a !important;
+  background-color: #242424 !important;
 }
 .rbc-time-slot {
-  background-color: #1a1a1a !important;
+  background-color: #242424 !important;
   color: white !important;
-  border: 0px solid #1a1a1a !important;
-  border-top: 1px solid #1a1a1a !important;
-  border-bottom: 1px solid #1a1a1a !important;
-  border-right: 1px solid #1a1a1a !important;
-  border-left: 1px solid #1a1a1a !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.422) !important; */
 }
 .rbc-timeslot-group {
-  background-color: #1a1a1a;
+  background-color: #242424;
 
-  border-top: 1px solid white !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.422) !important; */
 }
 .rbc-day-slot {
 }
@@ -199,27 +228,41 @@ button:focus-visible {
 .rbc-current-time-indicator {
 }
 .rbc-agenda-empty {
-  background-color: #1a1a1a !important;
+  background-color: #242424 !important;
   color: white !important;
 }
 .rbc-agenda-view {
+  font-family: "Roboto", sans-serif;
+  border: none !important;
+  height: 100%;
+  background-color: transparent; /* Avoid conflicting with wrapper's background */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .rbc-agenda-table {
 }
 .rbc-agenda-content {
+  color: white !important;
+  text-align: left;
 }
 .rbc-agenda-date-cell {
+  color: white !important;
+  align-items: center;
+  justify-content: center;
 }
 .rbc-agenda-time-cell {
+  color: white !important;
 }
 .rbc-agenda-event-cell {
+  color: white !important;
 }
 
 /* Today's date styling */
 .rbc-today {
-  background-color: #1a1a1a !important; /* Light blue */
+  background-color: #242424 !important; /* Light blue */
   color: white !important;
-  border: 1px solid #475569;
+  /* border: 1px solid rgba(255, 255, 255, 0.422) !important; */
 }
 
 /* Weekend day styling */
@@ -236,6 +279,7 @@ button:focus-visible {
   padding: 2px;
   font-size: 12px;
   text-align: center;
+  z-index: 1;
 }
 
 .rbc-event:hover {
@@ -250,7 +294,7 @@ button:focus-visible {
 .rbc-overlay {
   background-color: white;
   border: 1px solid #ccc;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  /* border: 1px solid rgba(255, 255, 255, 0.422) !important; */
   padding: 10px;
   border-radius: 5px;
 }
@@ -258,7 +302,7 @@ button:focus-visible {
 /* Time grid (week/day view) */
 .rbc-time-content {
   background-color: #f8f9fa;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid rgba(255, 255, 255, 0.422) !important;
 }
 
 .rbc-current-time-indicator {

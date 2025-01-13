@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import GoogleCalendar from "../../components/calendar/calendar";
-import Header from "../../components/header/header";
 import LeftBar from "../../components/leftBar/leftBar";
 import styles from "./mainPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -208,13 +207,8 @@ const MainPage = () => {
 
   return (
     <div className={styles.mainPage}>
-      <div className={styles.topContainer}>
-        <Header />
-      </div>
-      <div className={styles.bottomContainer}>
-        <LeftBar onSubmitEvent={handleEventSubmission} />
-        <GoogleCalendar />
-      </div>
+      <LeftBar onSubmitEvent={handleEventSubmission} />
+      <GoogleCalendar />
     </div>
   );
 };

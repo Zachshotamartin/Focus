@@ -1,12 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import eventsSlice from "./reducers/eventsSlice";
-
+import pageStateSlice from "./reducers/pageStateSlice";
 const store = configureStore({
   reducer: {
     events: eventsSlice,
+    pageState: pageStateSlice,
   },
   preloadedState: {
-    events: { events: [], selectedEvent: null },
+    events: {
+      events: [],
+      selectedEvent: null,
+      tasks: [],
+      freebusy: [],
+      loading: false,
+    },
+    pageState: { isCalendarView: true, allTasks: true },
   },
 });
 
